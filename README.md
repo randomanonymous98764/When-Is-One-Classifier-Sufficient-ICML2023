@@ -1,5 +1,28 @@
 # When is one classifier enough? ICML 2023 submission
 
+## Examples when ensembles fail / The simple bound is actually tight.
+
+Perhaps the simplest bound on the majority-vote classifier, which we introduce as Inequality (1) on the paper, only guarantees that the majority vote classifier is no worse than twice the average error rate.
+
+$$
+\mathbb{L}(h_{\mathrm{MV}}) \leq 2\mathbb{E}_h [\mathbb{L}(h)]
+$$
+
+While this naive bound that the majority vote classifier is no worse than twice the average error rate looks loose, it is actaully a tight bound. There are  cases where majority vote classifier is actually worse than the average error rate. To see this, we introduce two examples.
+
+#### Example 1 (The upper bound is tight)
+Consider a classification problem with two classes. For given $\epsilon > 0$, suppose slightly less than half, $0.5-\epsilon$ fraction of classifiers are the perfect classifier, correctly classifying test data with probability 1, and the other $0.5+\epsilon$ fraction of classifiers are completely wrong, incorrectly predicting on test data with probability 1. With this composition of classifiers, average error rate is $0.5+\epsilon$ and the majority-vote error rate is $1$. Taking $\epsilon \to 0$ concludes that the upper bound is tight. The left plot of the figure below provides a visual illustration of the composition of classifiers.
+
+#### Example 2 (The upper bound is tight _even when_ the average test error is low)
+We again consider a classification problem with two classes. For given $\epsilon > 0$, as in Example 1, slightly less than half, $0.5-\epsilon$ fraction of classifiers are the perfect classifier. All of the other $0.5+\epsilon$ fraction of classifiers, on the contrary, now correctly predicts on the same $1-2\delta$ fraction of the test data and incorrectly predicts on the other $2\delta$ fraction of the test data. With this composition of classifiers, the majority-vote error rate is $2\delta$ even when the average error rate is $\delta(1+2\epsilon)$. Taking $\epsilon \to 0$ concludes that the upper bound is also tight **_even when_** the average test error rate is arbitrarily low. The right plot of the figure below provides a visual illustration of the composition of classifiers.
+
+<!---
+![figs/First_order_bound_tight_combined.png]
+-->
+
+#### Relation to the _competence_ assumption (Assumption 1 on the paper)
+These two examples suggest that it is inevitable to take an additional assumption to obtain a better upper bound of the majority vote classifier error rate, $\mathbb{L}(h_{\mathrm{MV}})$. In our paper, we come up with an assumption, which we call _competence_, that guarantees $\mathbb{L}(h_{\mathrm{MV}}) \leq \mathbb{E}_h [\mathbb{L}(h)]$.
+
 ## Competence plots
 
 Below we show what we call "competence plots" for a variety of experimental settings, verifying that Assumption 1 is satisfied. To do this, we estimate both $P(W_\rho \in [t,1/2))$ and $P(W_\rho \in [1/2, 1-t])$ on test data. To do this, given a test set of examples $(x_1,y_1),\dots,(x_m,y_m)$ and classifiers $h_1,\dots,h_N$ drawn from $\rho$, we construct the estimator
